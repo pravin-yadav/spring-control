@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,7 +33,9 @@ public class UserController {
     }
 
     @PostMapping("/user/createUser")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult bindingResults) {
+        System.out.println("BindingResult " + bindingResults.getFieldValue("confirmPassword"));
+        System.out.println("UserModelResult " + user.getConfirmPassword());
         for (User user1 : userService.findAllUser()) {
             if (user1.getEmail().contains(user.getEmail())) {
                 return new ResponseEntity<>("Email Exist!!!", HttpStatus.BAD_REQUEST);

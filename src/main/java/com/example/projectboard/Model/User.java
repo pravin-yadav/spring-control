@@ -36,6 +36,7 @@ public class User {
     @NotBlank(message = "Password can't be blank")
     private String password;
 
+    @Transient
     @Column(name = "confirm_password")
     private String confirmPassword;
 
