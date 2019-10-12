@@ -1,5 +1,7 @@
 package com.example.projectboard.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -96,6 +98,8 @@ public class User {
         this.mobile = mobile;
     }
 
+    @JsonIgnore
+    @JsonProperty(value = "password")
     public String getPassword() {
         return password;
     }
@@ -104,6 +108,8 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore
+    @JsonProperty(value = "confirm_password")
     public String getConfirmPassword() {
         return confirmPassword;
     }

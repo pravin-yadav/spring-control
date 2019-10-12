@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @CrossOrigin
 public class UserController {
 
-    BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserService userService;
@@ -56,7 +56,7 @@ public class UserController {
     public ResponseEntity<?> loginUser(@Valid @RequestBody User user) {
         for (User user1 : userService.findAllUser()) {
             if (user1.getEmail().contains(user.getEmail()) && bCryptEncoder.matches(user.getPassword(), user1.getPassword())) {
-                return new ResponseEntity<>("Logged in successfully", HttpStatus.OK);
+                return new ResponseEntity<>(ResponseEntity.status(HttpStatus.OK).body(user1), HttpStatus.OK);
             }
         }
         return new ResponseEntity<>("Logged Failed", HttpStatus.BAD_REQUEST);
