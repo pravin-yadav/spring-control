@@ -1,5 +1,6 @@
 package com.example.projectboard.Controller;
 
+import com.example.projectboard.JWT.CreateJWT;
 import com.example.projectboard.Model.User;
 import com.example.projectboard.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
 public class UserController {
 
-    private BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserService userService;
@@ -29,7 +32,7 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable Long userId) {
         User getUserById = userService.findUserById(userId);
-        return new ResponseEntity<>(getUserById, HttpStatus.OK);
+        return new ResponseEntity<>(ResponseEntity.status(HttpStatus.OK).body(getUserById), HttpStatus.OK);
     }
 
     @PostMapping("/user/createUser")
@@ -56,7 +59,10 @@ public class UserController {
     public ResponseEntity<?> loginUser(@Valid @RequestBody User user) {
         for (User user1 : userService.findAllUser()) {
             if (user1.getEmail().contains(user.getEmail()) && bCryptEncoder.matches(user.getPassword(), user1.getPassword())) {
-                return new ResponseEntity<>(ResponseEntity.status(HttpStatus.OK).body(user1), HttpStatus.OK);
+                Map userLoggedIn = new HashMap();
+                userLoggedIn.put("token", CreateJWT.createToken(user1.getEmail(), user.getPassword()));
+                userLoggedIn.put("data", user1);
+                return new ResponseEntity<>(ResponseEntity.status(HttpStatus.OK).body(userLoggedIn), HttpStatus.OK);
             }
         }
         return new ResponseEntity<>("Logged Failed", HttpStatus.BAD_REQUEST);
@@ -69,10 +75,7 @@ public class UserController {
             usersId.setUsername(user.getUsername());
             usersId.setFirstName(user.getFirstName());
             usersId.setLastName(user.getLastName());
-            usersId.setEmail(user.getEmail());
             usersId.setMobile(user.getMobile());
-            usersId.setPassword(user.getPassword());
-            usersId.setConfirmPassword(user.getConfirmPassword());
             User updatedUser = userService.createOrUpdateUser(usersId);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 
