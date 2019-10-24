@@ -28,14 +28,12 @@ public class User {
     private String lastName;
 
     @Column(name = "email_id")
-    @NotBlank(message = "Email Id can't be blank")
     private String email;
 
     @Column(name = "mobile_no")
     private String mobile;
 
     @Column(name = "password")
-    @NotBlank(message = "Password can't be blank")
     private String password;
 
     @Transient
