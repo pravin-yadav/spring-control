@@ -58,7 +58,7 @@ public class ProfileModel {
     @JoinColumn(name = "user")
     private User user;
 
-    public ProfileModel(Long profileId, String profilePicture, Date dateOfBirth, String gender, String country, String state, String city, String postalCode, String maritalStatus, String address, String education, String occupation, String designation, User user) {
+    public ProfileModel(Long profileId, String profilePicture, LocalDate dateOfBirth, String gender, String country, String state, String city, String postalCode, String maritalStatus, String address, String education, String occupation, String designation, User user) {
         this.profileId = profileId;
         this.profilePicture = profilePicture;
         this.dateOfBirth = dateOfBirth;
@@ -91,11 +91,11 @@ public class ProfileModel {
         this.profilePicture = profilePicture;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
